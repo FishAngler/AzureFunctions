@@ -22,12 +22,16 @@ public static void Run(string myTimer, TraceWriter log)
     IEnumerable<LoginRefreshToken> expiredTokens = table.ExecuteQuery(query);
     log.Info($"*** Table Length: {expiredTokens.Count()} ***");  
 
+    int deleteCount = 0;
     foreach (LoginRefreshToken entity in expiredTokens)
     {        
         TableOperation deleteOperation = TableOperation.Delete(entity);
         table.Execute(deleteOperation);
+        deleteCount++;
         log.Info($"*** Deleting Entity: {entity.ExpiresUtc} ***");  
     }
+
+    log.Info($"*** A total of {deleteCount} records deleted. ***");
 
 }
 
