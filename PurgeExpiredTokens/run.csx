@@ -17,21 +17,17 @@ public static void Run(string myTimer, TraceWriter log)
 
     TableQuery<LoginRefreshToken> query = 
         new TableQuery<LoginRefreshToken>()
-        .Where(TableQuery.GenerateFilterCondition("ExpiresUtc", QueryComparisons.LessThan, DateTime.UtcNow.ToShortDateString()));
+        .Where(TableQuery.GenerateFilterConditionForDate("ExpiresUtc", QueryComparisons.LessThan, DateTimeOffset.UtcNow));
 
     IEnumerable<LoginRefreshToken> expiredTokens = table.ExecuteQuery(query);
     log.Info($"*** Table Length: {expiredTokens.Count()} ***");  
 
-    TableBatchOperation batchOperation = new TableBatchOperation();
-
     foreach (LoginRefreshToken entity in expiredTokens)
-    {
-        batchOperation.Delete(entity);
+    {        
+        TableOperation deleteOperation = TableOperation.Delete(entity);
+        table.Execute(deleteOperation);
         log.Info($"*** Deleting Entity: {entity.ExpiresUtc} ***");  
     }
-
-    table.ExecuteBatch(batchOperation);
-    log.Info($"*** Batch Executed ***");
 
 }
 
