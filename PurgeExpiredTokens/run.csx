@@ -27,7 +27,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
 }
 
-public class LoginRefreshToken
+public class LoginRefreshToken : TableEntity
 {
     public string PartitionKey {get;set;}
     public string RowKey {get;set;}
