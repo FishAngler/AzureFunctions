@@ -2,13 +2,18 @@ using System;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Configuration;
 
 public static void Run(string myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");        
-    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(GetEnvironmentVariable("AzureStorageConnectionString"));
+
+    log.Info($"** Connection String: {ConfigurationManager.AppSettings["AzureStorageConnectionString"]}");
+    log.Info($"** Table Name: {ConfigurationManager.AppSettings["AuthTokensTableName"]}");
+
+    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AzureStorageConnectionString"]);
     CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-    CloudTable table = tableClient.GetTableReference(GetEnvironmentVariable("AuthTokensTableName")); 
+    CloudTable table = tableClient.GetTableReference(ConfigurationManager.AppSettings["AuthTokensTableName"]); 
 
     TableQuery<LoginRefreshToken> query = 
         new TableQuery<LoginRefreshToken>()
@@ -45,8 +50,3 @@ public class LoginRefreshToken : TableEntity
 	public bool Enabled { get; set; } = true;
 }
 
-public static string GetEnvironmentVariable(string name)
-{
-    return name + ": " + 
-        System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
-}
