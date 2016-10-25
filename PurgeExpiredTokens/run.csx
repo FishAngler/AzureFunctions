@@ -3,7 +3,7 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
-public static void Run(TimerInfo myTimer, TraceWriter log)
+public static void Run(string myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");        
     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(GetEnvironmentVariable("AzureStorageConnectionString"));
@@ -15,15 +15,18 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
         .Where(TableQuery.GenerateFilterCondition("ExpiresUtc", QueryComparisons.LessThan, DateTime.UtcNow.ToShortDateString()));
 
     IEnumerable<LoginRefreshToken> expiredTokens = table.ExecuteQuery(query);
+    log.Info($"*** Table Length: {expiredTokens.length} ***");  
 
     TableBatchOperation batchOperation = new TableBatchOperation();
 
     foreach (LoginRefreshToken entity in expiredTokens)
     {
         batchOperation.Delete(entity);
+        log.Info($"*** Deleting Entity: {entity.ExpiresUtc} ***");  
     }
 
     table.ExecuteBatch(batchOperation);
+    log.Info($"*** Batch Executed ***");
 
 }
 
