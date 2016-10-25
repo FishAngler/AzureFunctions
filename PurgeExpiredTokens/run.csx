@@ -15,7 +15,7 @@ public static void Run(string myTimer, TraceWriter log)
         .Where(TableQuery.GenerateFilterCondition("ExpiresUtc", QueryComparisons.LessThan, DateTime.UtcNow.ToShortDateString()));
 
     IEnumerable<LoginRefreshToken> expiredTokens = table.ExecuteQuery(query);
-    log.Info($"*** Table Length: {expiredTokens.length} ***");  
+    log.Info($"*** Table Length: {expiredTokens.Count()} ***");  
 
     TableBatchOperation batchOperation = new TableBatchOperation();
 
