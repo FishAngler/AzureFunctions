@@ -5,8 +5,18 @@
             "name": "myBlob",
             "type": "blobTrigger",
             "direction": "in",
-            "path": "samples-workitems/{name}",
-            "connection":""
+            "path": "hackfestblobs/{blobname}",
+            "connection":"AzureStorageConnectionString"
+        },
+
+         {
+            "name": "document",
+            "type": "documentdb",
+            "databaseName": "dev-doc-eus-fa-001",
+            "collectionName": "HackFestFaces",
+            "createIfNotExists": false,
+            "connection": "DocumentDBConnectionString",
+            "direction": "out"
         }
     ]
 }
