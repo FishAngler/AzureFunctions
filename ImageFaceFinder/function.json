@@ -2,7 +2,7 @@
     "disabled": false,
     "bindings": [
         {
-            "name": "myBlob",
+            "name": "inputBlob",
             "type": "blobTrigger",
             "direction": "in",
             "path": "hackfestblobs/{blobname}",
