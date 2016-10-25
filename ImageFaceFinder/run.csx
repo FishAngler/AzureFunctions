@@ -8,7 +8,8 @@ public static void Run(Stream inputBlob, string name, TraceWriter log)
 
     IFaceServiceClient faceServiceClient = new FaceServiceClient("0a10db5a4d4448e38b8229d05b39e432");
 
-    faceServiceClient.DetectAsync(inputBlob);
+    var face = faceServiceClient.Detect(inputBlob);
+     log.Info($"Face {face}");
     var faceRects = faces.Select(face => face.FaceRectangle);
     var temp = faceRects.ToArray();
 
