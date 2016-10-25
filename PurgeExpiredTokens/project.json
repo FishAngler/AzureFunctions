@@ -2,7 +2,8 @@
   "frameworks": {
     "net46":{
       "dependencies": {
-        "Microsoft.ApplicationInsights": "2.1.0"
+        "Microsoft.ApplicationInsights": "2.1.0",
+        "WindowsAzure.Storage": "7.2.1"
       }
     }
    }
