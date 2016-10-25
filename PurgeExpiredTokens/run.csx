@@ -20,7 +20,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     foreach (LoginRefreshToken entity in expiredTokens)
     {
-        batchOperation.delete(entity);
+        batchOperation.Delete(entity);
     }
 
     table.ExecuteBatch(batchOperation);
@@ -29,6 +29,9 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
 public class LoginRefreshToken
 {
+    public string PartitionKey {get;set;}
+    public string RowKey {get;set;}
+
 	public string Id { get; set; }
 	public string UserId { get; set; }
 	public string Subject { get; set; }
