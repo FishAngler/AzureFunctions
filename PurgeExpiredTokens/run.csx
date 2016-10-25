@@ -9,15 +9,17 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
     CloudTable table = tableClient.GetTableReference(GetEnvironmentVariable("AuthTokensTableName")); 
 
-    TableQuery<LoginRefreshToken> query = new TableQuery<LoginRefreshToken>().Where(TableQuery.GenerateFilterCondition("ExpiresUtc", QueryComparisons.LessThan, DateTime.Now));
+    TableQuery<LoginRefreshToken> query = 
+        new TableQuery<LoginRefreshToken>()
+        .Where(TableQuery.GenerateFilterCondition("ExpiresUtc", QueryComparisons.LessThan, DateTime.UtcNow.ToShortDateString()));
 
-    List<LoginRefreshToken> expiredTokens = table.ExecuteQuery(query);
+    IEnumerable<LoginRefreshToken> expiredTokens = table.ExecuteQuery(query);
 
     TableBatchOperation batchOperation = new TableBatchOperation();
 
     foreach (LoginRefreshToken entity in expiredTokens)
     {
-        batchOperation.delete(entiry)
+        batchOperation.delete(entity)
     }
 
     table.ExecuteBatch(batchOperation);
