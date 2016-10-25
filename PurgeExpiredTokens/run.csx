@@ -20,7 +20,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     foreach (LoginRefreshToken entity in expiredTokens)
     {
-        batchOperation.delete(entity)
+        batchOperation.delete(entity);
     }
 
     table.ExecuteBatch(batchOperation);
