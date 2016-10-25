@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Azure;
 #r Microsoft.WindowsAzure.Storage
+#r Microsoft.WindowsAzure.Storage.Table
 
 public static void Run(TimerInfo myTimer, TraceWriter log)
 {
