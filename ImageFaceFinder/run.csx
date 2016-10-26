@@ -1,6 +1,7 @@
 #r "System.Runtime"
 #r "System.Threading.Tasks"
 #r "System.IO"
+#r "System.Linq"
 
 using System;
 using System.Configuration;
