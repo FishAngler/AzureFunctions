@@ -2,18 +2,21 @@
 #r "System.Runtime"
 #r "Newtonsoft.Json"
 
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
+using Microsoft.Azure.WebJobs;
+using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Configuration;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Configuration;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
-using Microsoft.Azure.Documents;
-using Newtonsoft.Json;
 
 private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
 

@@ -2,8 +2,17 @@
   "frameworks": {
     "net46":{
       "dependencies": {
-        "Microsoft.Azure.Documents.Client": "1.10.0.0",
-        "Microsoft.Azure.DocumentDB": "1.10.0"
+        "EntityFramework": "6.1.3",
+        "Microsoft.Azure.DocumentDB": "1.10.0",
+        "Microsoft.Azure.WebJobs": "1.0.1",
+        "Microsoft.Azure.WebJobs.Core": "1.0.1",
+        "Microsoft.Data.Edm": "5.6.0",
+        "Microsoft.Data.OData": "5.6.0",
+        "Microsoft.Data.Services.Client": "5.6.0",
+        "Microsoft.WindowsAzure.ConfigurationManager": "2.0.3",
+        "Newtonsoft.Json": "6.0.8",
+        "System.Spatial": "5.6.0",
+        "WindowsAzure.Storage": "4.2.1"
       }
     }
    }
