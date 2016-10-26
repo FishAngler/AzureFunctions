@@ -5,16 +5,9 @@ using Newtonsoft.Json;
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
 
+    string myData = await req.Content.ReadAsStringAsync();
     FaceResult fr = new FaceResult();
-    fr = await JsonConvert.DeserializeObjectAsync<FaceResult>(req);
-
-    //dynamic data = await req.Content.ReadAsAsync<FaceResult>();
-    //string name = data?.name;
-
-    // if (name == null)
-    // {
-    //     return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
-    // }
+    fr = await JsonConvert.DeserializeObjectAsync<FaceResult>(myData);
 
     foreach(Face f in fr.Faces){
         log.Info($"{f.Width}");
