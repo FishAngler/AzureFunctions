@@ -10,7 +10,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 {
     //Get data from req
     string myData = await req.Content.ReadAsStringAsync();
-    Catch catch = JsonConvert.DeserializeObject<Catch>(myData);
+    Catch catch = new Catch();
+    catch = JsonConvert.DeserializeObject<Catch>(myData);
     string catchId = catch.id;
     List<string> mediaUris = catch.Media.Select(media => media.MediaUri);
     //Get Data from temp DB
