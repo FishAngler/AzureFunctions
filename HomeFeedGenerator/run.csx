@@ -50,7 +50,7 @@ public async static Task Run(
     await AddPostToHomeAndUserFeedsAsync(
         post, 
         usersIds, 
-        userFeedsTable, 
+        userFeedTable, 
         homeFeedTable)
             .ConfigureAwait(false);
 
@@ -117,7 +117,7 @@ public static async Task<T> SafeExecute<T>(Func<Task<T>> command)
 public static Task AddPostToHomeAndUserFeedsAsync(
     PostSummary post, 
     IEnumerable<string> usersIds,
-    IAsyncCollector<DynamicTableEntity> userFeedsTable,
+    IAsyncCollector<DynamicTableEntity> userFeedTable,
     IAsyncCollector<DynamicTableEntity> homeFeedTable)
 {
     var feedProps = new Dictionary<string, EntityProperty> {
@@ -129,7 +129,7 @@ public static Task AddPostToHomeAndUserFeedsAsync(
     var tasks = new List<Task>();
 
     var item = new DynamicTableEntity(partitionKey: post.UserId, rowKey: rk, properties: feedProps, etag: null);
-    tasks.Add(userFeedsTable.AddAsync(item));
+    tasks.Add(userFeedTable.AddAsync(item));
 
     foreach (var userId in usersIds.Distinct())
     {
