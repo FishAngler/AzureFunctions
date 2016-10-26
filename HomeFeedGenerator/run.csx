@@ -121,8 +121,6 @@ public static async Task<T> SafeExecute<T>(Func<Task<T>> command)
     }
 }
 
-private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
-
 public static Task AddPostToHomeAndUserFeedsAsync(
     PostSummary post, 
     IEnumerable<string> usersIds,
