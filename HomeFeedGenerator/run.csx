@@ -25,16 +25,12 @@ public async static Task Run(
     IAsyncCollector<DynamicTableEntity> homeFeedTable, 
     TraceWriter log)
 {
-    log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
+    log.Info($"Creating feed from post by '{post.UserId}'");
 
     string _dbId = ConfigurationManager.AppSettings["DocDBId"];
     string _collName = "Follow";
-
-    log.Info($"dbId = {_dbId}");
-    
+   
     var collLink = UriFactory.CreateDocumentCollectionUri(_dbId, _collName).ToString();
-
-    log.Info($"collLink = {collLink}");
 
     var followables = new List<string>();
     followables.Add(post.UserId);
@@ -44,10 +40,6 @@ public async static Task Run(
     var usersIds = await GetFollowersAsync(followables, collLink).ConfigureAwait(false);
     usersIds.Add(post.UserId); //TO include the post in the HomeFeed of the own user
     
-    foreach (var userId in usersIds) {
-        log.Info($"userId = {userId}");
-    }
-
     if (usersIds.Count == 1)
     {
         var dict = new Dictionary<string, string>() { { "userIds", string.Join(",", usersIds) } };
@@ -131,7 +123,7 @@ public static Task AddPostToHomeAndUserFeedsAsync(
         { nameof(PostSummary.PostId), new EntityProperty(post.PostId) },
         { nameof(PostSummary.PostType), new EntityProperty((int)post.PostType) }};
 
-    var rk = string.Format("ZAIN{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
+    var rk = string.Format("{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
 
     var tasks = new List<Task>();
 
