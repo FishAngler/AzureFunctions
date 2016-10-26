@@ -12,7 +12,7 @@ using Microsoft.ProjectOxford.Face.Contract;
 
 public async static Task Run(Stream inputBlob, string blobname, TraceWriter log)
 {
-    log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {inputBlob.Length} Bytes");
+    log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
