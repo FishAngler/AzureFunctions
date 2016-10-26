@@ -1,12 +1,14 @@
 #r "System.Runtime"
 #r "System.Threading.Tasks"
 #r "System.IO"
+#r "System.Linq"
 
 using System;
 using System.Configuration;
 
 using System.Runtime;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
@@ -25,7 +27,7 @@ public static void Run(Stream inputBlob, string blobname, out Face[] document, T
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
-        faceRect.Top)).toArray();
+        faceRect.Top)).ToArray();
 
 }
 
