@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public static void Run(Stream inputBlob, string blobname, out Faces document, TraceWriter log)
+public static void Run(Stream inputBlob, string blobname, out FacesContainer document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
