@@ -23,6 +23,7 @@ private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
 public async static Task Run(
     PostSummary post,
     IAsyncCollector<DynamicTableEntity> homeFeedTable, 
+    IAsyncCollector<DynamicTableEntity> userFeedTable, 
     TraceWriter log)
 {
     log.Info($"Creating feed from post by '{post.UserId}'");
@@ -49,7 +50,7 @@ public async static Task Run(
     await AddPostToHomeAndUserFeedsAsync(
         post, 
         usersIds, 
-        //userFeedsTable, 
+        userFeedsTable, 
         homeFeedTable)
             .ConfigureAwait(false);
 
@@ -116,7 +117,7 @@ public static async Task<T> SafeExecute<T>(Func<Task<T>> command)
 public static Task AddPostToHomeAndUserFeedsAsync(
     PostSummary post, 
     IEnumerable<string> usersIds,
-    //IAsyncCollector<DynamicTableEntity> userFeedsTable,
+    IAsyncCollector<DynamicTableEntity> userFeedsTable,
     IAsyncCollector<DynamicTableEntity> homeFeedTable)
 {
     var feedProps = new Dictionary<string, EntityProperty> {
@@ -127,8 +128,8 @@ public static Task AddPostToHomeAndUserFeedsAsync(
 
     var tasks = new List<Task>();
 
-    //var item = new DynamicTableEntity(partitionKey: post.UserId, rowKey: rk, properties: feedProps, etag: null);
-    //tasks.Add(userFeedsTable.AddAsync(item));
+    var item = new DynamicTableEntity(partitionKey: post.UserId, rowKey: rk, properties: feedProps, etag: null);
+    tasks.Add(userFeedsTable.AddAsync(item));
 
     foreach (var userId in usersIds.Distinct())
     {
