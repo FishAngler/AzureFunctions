@@ -10,5 +10,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
     }
 
+    //Pass in name to know we are working. 
+    log.Info($"Passed in Name: {name}");
+
     return req.CreateResponse(HttpStatusCode.Created);
 }
