@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Runtime;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
