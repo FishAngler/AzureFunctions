@@ -12,11 +12,12 @@ public async static Task Run(
     IAsyncCollector<DynamicTableEntity> homeFeedTable, 
     TraceWriter log)
 {
-    log.Info($"C# ServiceBus queue trigger function processed message: {post}");
     log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
 
     string _dbId = ConfigurationManager.AppSettings["DocDBId"];
     string _collName = "Follow";
+
+    log.Info($"dbId = {_dbId}");
 }
 
 public class PostSummary
