@@ -133,7 +133,7 @@ public static Task AddPostToHomeAndUserFeedsAsync(
 
     foreach (var userId in usersIds.Distinct())
     {
-        var item = new DynamicTableEntity(partitionKey: userId, rowKey: rk, properties: feedProps, etag: null);
+        item = new DynamicTableEntity(partitionKey: userId, rowKey: rk, properties: feedProps, etag: null);
         tasks.Add(homeFeedTable.AddAsync(item));
     }
 
