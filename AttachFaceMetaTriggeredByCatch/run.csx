@@ -34,11 +34,11 @@ public static async Task Run(HttpRequestMessage req, TraceWriter log)
     log.Info("Running LINQ query...");
 
     var mediaMetaInfoRecords = (await myQuery.ExecuteNextAsync<MediaMetaInfo>());
-    
+   
     if(mediaMetaInfoRecords != null){
-        log.Info("Documents Found...");
+        log.Info("Media meta info records found...");
+        updateCatchRecord(catchId, mediaMetaInfoRecords);
     }
-    //Update the record in catch DB
 
 }
 
@@ -93,5 +93,52 @@ public class Face
     public int Loc_x { get; set; }
     public int Loc_y { get; set; }
     public string UserId { get; set; }
+}
+
+public static updateCatchRecord(string catchId, IEnumerable<MediaMetaInfo> mediaMetaInfoList){
+    // Here we find the Andersen family via its LastName
+    var myQuery = client.CreateDocumentQuery<Catch>(
+            UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
+            .Where(c => c.id == catchId)
+            .Select(e => e).AsDocumentQuery();
+
+    // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
+    log.Info("Running LINQ query...");
+
+    var myCatch = (await myQuery.ExecuteNextAsync<Catch>()).SingleOrDefault();
+    
+    if(myCatch != null)
+        log.Info("Document Found...");
+
+    if (myCatch.Media != null)
+    {
+        foreach(var mediaMetaInfo: mediaMetaInfoList){
+
+            var myMediaToUpdate = myCatch.Media
+            .Where(m => m.MediaUri == mediaMetaInfo.MediaUri).SingleOrDefault();
+        
+            if (myMediaToUpdate != null)
+            {
+                MediaBlob myMediaUpdated = new MediaBlob();
+                myMediaUpdated = myMediaToUpdate;
+
+                myMediaUpdated.Faces = new List<Face>();
+                foreach (Face f in fr.Faces)
+                {
+                    myMediaUpdated.Faces.Add(f);
+                }
+                myCatch.Media.Remove(myMediaToUpdate);
+                myCatch.Media.Add(myMediaUpdated);
+            }
+        }     
+        await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
+    }    
+
+    log.Info("Update Completed");
+
+    //*********** END DB ********************/
+
+    return req.CreateResponse(HttpStatusCode.Created);
+}
 }
 
