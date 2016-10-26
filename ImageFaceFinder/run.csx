@@ -22,7 +22,7 @@ public async static Task Run(Stream inputBlob, string blobname, TraceWriter log)
          log.Info($"Faces {faces}");
     var faceRects = faces.Select(face => face.FaceRectangle);
 
-     foreach (int faceRect in faceRects)
+     foreach (FaceRectangle faceRect in faceRects)
     {
         log.Info($"ImageFile {faceRect.ImageFile}");
         log.Info($"Left {faceRect.Left}");
