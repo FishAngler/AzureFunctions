@@ -18,7 +18,7 @@ public static void Run(Stream inputBlob, string blobname, out IEnumerable<Face> 
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
 
-    var faces = faceServiceClient.DetectAsync(inputBlob).Result();
+    var faces = faceServiceClient.DetectAsync(inputBlob).Result;
 
     var faceRects = faces.Select(face => face.FaceRectangle);
     document = faceRects.Select(faceRect => new Face(
