@@ -45,7 +45,7 @@ public async static Task Run(
     usersIds.Add(post.UserId); //TO include the post in the HomeFeed of the own user
     
     foreach (var userId in usersIds) {
-        log($"userId = {userId}");
+        log.Info($"userId = {userId}");
     }
 }
 
