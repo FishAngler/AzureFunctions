@@ -7,6 +7,13 @@
             "direction": "in",
             "queueName": "homefeed",
             "connection": "hackfestServiceBus"
+        },
+        {
+            "type": "table",
+            "name": "homeFeedTable",
+            "tableName": "HomeFeed",
+            "connection": "AzureStorageConnectionString",
+            "direction": "out"
         }
     ]
 }
