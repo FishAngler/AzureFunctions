@@ -15,7 +15,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     fr = JsonConvert.DeserializeObject<FaceResult>(myData);
 
     //Debugging 
-    log.Info($"Retrieving Document: {fr.DocumentId}");
+    log.Info($"Retrieving Document: {fr.CatchId}");
     foreach(Face f in fr.Faces){
         log.Info($"Width: {f.Width}");
     }
@@ -57,7 +57,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
             myMediaUpdated = myMediaToUpdate;
 
             myMediaUpdated.Faces = new List<Face>();
-            foreach (Face f in faces)
+            foreach (Face f in fr.Faces)
             {
                 myMediaUpdated.Faces.Add(f);
             }
