@@ -51,7 +51,6 @@ public class Face
         public int Height { get; set; }
         public int Loc_x { get; set; }
         public int Loc_y { get; set; }
-        public int Loc_y { get; set; }
 
         public Face(int Width, int Height, int Loc_x, int Loc_y){
             this.Width = Width;
