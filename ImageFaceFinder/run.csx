@@ -1,8 +1,10 @@
 #r "System.Runtime"
+#r "SSystem.Threading.Tasks"
 
 using System;
 using System.Configuration;
 using System.Runtime;
+using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
@@ -13,7 +15,7 @@ public static void Run(Stream inputBlob, string name, TraceWriter log)
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
 
-    var faces = await faceServiceClient.DetectAsync(imageFileStream);
+    var faces = await faceServiceClient.DetectAsync(inputBlob);
          log.Info($"Faces {faces}");
     var faceRects = faces.Select(face => face.FaceRectangle);
     var temp = faceRects.ToArray();
