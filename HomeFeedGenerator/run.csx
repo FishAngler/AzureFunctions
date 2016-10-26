@@ -7,7 +7,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 public async static Task Run(
     PostSummary post,
-    IAsyncCollector<DynamicTableEntity> homeFeedsTable, 
+    IAsyncCollector<DynamicTableEntity> homeFeedTable, 
     TraceWriter log)
 {
     log.Info($"C# ServiceBus queue trigger function processed message: {post}");
