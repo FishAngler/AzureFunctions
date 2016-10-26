@@ -1,6 +1,10 @@
 #r "Newtonsoft.Json"
 using System.Net;
 using Newtonsoft.Json;
+using System.Configuration;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
@@ -14,6 +18,11 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     foreach(Face f in fr.Faces){
         log.Info($"Width: {f.Width}");
     }
+
+    // Doc DB
+    string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
+    string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
+    DocumentClient client;
 
     return req.CreateResponse(HttpStatusCode.Created);
 }
