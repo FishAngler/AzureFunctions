@@ -32,13 +32,13 @@ public static void Run(Stream inputBlob, string blobname, out Faces document, Tr
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    document = new Faces(faces);
+    document = new FacesContainer(faces);
 }
 
-public class Faces{
+public class FacesContainer{
     public Face[] Faces { get; set; }
 
-    public Faces(Face[] Faces){
+    public FacesContainer(Face[] Faces){
         this.Faces = Faces;
     }
 }
