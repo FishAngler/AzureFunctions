@@ -1,9 +1,11 @@
 #r "System.Runtime"
 #r "System.Threading.Tasks"
+#r "System.IO"
 
 using System;
 using System.Configuration;
 using System.Runtime;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
