@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
-    //List<Face> = new List<Face>();
 
-    dynamic data = await req.Content.ReadAsAsync<FaceResult>();
+    FaceResult fr = new FaceResult();
+    fr = JsonConvert.DeserializeObject<FaceResult>(req);
+
+    //dynamic data = await req.Content.ReadAsAsync<FaceResult>();
     //string name = data?.name;
 
     // if (name == null)
