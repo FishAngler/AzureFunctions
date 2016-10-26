@@ -37,8 +37,8 @@ public async static Task Run(
     if (!string.IsNullOrWhiteSpace(post.BodyOfWater)) followables.Add(post.BodyOfWater);
     if (!string.IsNullOrWhiteSpace(post.FishSpecie)) followables.Add(post.FishSpecie);
 
-    var usersIds = await GetFollowersAsync(followables, collLink).ConfigureAwait(false);
-    usersIds.Add(post.UserId); //TO include the post in the HomeFeed of the own user
+    // var usersIds = await GetFollowersAsync(followables, collLink).ConfigureAwait(false);
+    // usersIds.Add(post.UserId); //TO include the post in the HomeFeed of the own user
 }
 
 public class PostSummary
