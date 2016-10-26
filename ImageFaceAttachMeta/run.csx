@@ -20,18 +20,20 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         log.Info($"Width: {f.Width}");
     }
 
-    //Doc DB
-    string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
-    string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
-    DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
 
-    await ExecuteSimpleQuery("fishangler", "HackFestFaces", fr);
+
+    var result = await ExecuteSimpleQuery("fishangler", "HackFestFaces", fr);
 
     return req.CreateResponse(HttpStatusCode.Created);
 }
 
 private async Task ExecuteSimpleQuery(string databaseName, string collectionName, FaceResult faceData)
 {
+    //Doc DB
+    string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
+    string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
+    DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
+
     // Set some common query options
     FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
 
@@ -42,12 +44,12 @@ private async Task ExecuteSimpleQuery(string databaseName, string collectionName
             .Select(e => e).AsDocumentQuery();
 
     // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
-    log.Info("Running LINQ query...");
+    //log.Info("Running LINQ query...");
 
     var myCatch = (await myQuery.ExecuteNextAsync<Catch>()).SingleOrDefault();
     
     if(myCatch != null)
-        log.Info("Document Found...");
+        //log.Info("Document Found...");
 
     if (myCatch.Media != null)
     {
@@ -63,7 +65,7 @@ private async Task ExecuteSimpleQuery(string databaseName, string collectionName
         await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
     }    
 
-    log.Info("Update Completed");
+    //log.Info("Update Completed");
 }
 
 public class Catch
