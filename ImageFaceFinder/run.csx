@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public async static Task Run(Stream inputBlob, string name, TraceWriter log)
+public async static Task Run(Stream inputBlob, string blobname, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {inputBlob.Length} Bytes");
 
