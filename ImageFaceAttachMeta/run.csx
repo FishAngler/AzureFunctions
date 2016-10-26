@@ -25,7 +25,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
     string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
     string databaseName = "fishangler";
-    string collectionName = "HackFestFaces";
+    string collectionName = "Catch";
     DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
 
     // Set some common query options
@@ -34,7 +34,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     // Here we find the Andersen family via its LastName
     var myQuery = client.CreateDocumentQuery<Catch>(
             UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
-            .Where(c => c.id == fr.DocumentId)
+            .Where(c => c.id == fr.CatchId)
             .Select(e => e).AsDocumentQuery();
 
     // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
@@ -47,13 +47,22 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     if (myCatch.Media != null)
     {
-        foreach (var media in myCatch.Media)
+
+        var myMediaToUpdate = myCatch.Media
+            .Where(m => m.MediaUri == fr.MediaUri).SingleOrDefault();
+        
+        if (myMediaToUpdate != null)
         {
-            media.Faces = new List<Face>();
-            foreach (Face f in fr.Faces)
+            MediaBlob myMediaUpdated = new MediaBlob();
+            myMediaUpdated = myMediaToUpdate;
+
+            myMediaUpdated.Faces = new List<Face>();
+            foreach (Face f in faces)
             {
-                media.Faces.Add(f);
-            }                    
+                myMediaUpdated.Faces.Add(f);
+            }
+            myCatch.Media.Remove(myMediaToUpdate);
+            myCatch.Media.Add(myMediaUpdated);
         }
 
         await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
@@ -105,7 +114,8 @@ public class MediaSize
 }
 
 public class FaceResult {
-    public string DocumentId { get; set; }
+    public string CatchId { get; set; }
+    public string MediaUri { get; set; }
     public List<Face> Faces {get;set;}
 }
 
