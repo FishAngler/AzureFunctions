@@ -13,33 +13,35 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public static void Run(Stream inputBlob, string blobname, out Faces document, TraceWriter log)
+public static void Run(Stream inputBlob, string blobname, out FacesContainer document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
 
-    var faces = faceServiceClient.DetectAsync(inputBlob).Result;
+    var recognizedFaces = faceServiceClient.DetectAsync(inputBlob).Result;
 
-    var faceRects = faces.Select(face => face.FaceRectangle);
+    var faceRects = recognizedFaces.Select(face => face.FaceRectangle);
 
     log.Info($"Faces: {faceRects.Count()}");
 
-    Face[] faceArray = faceRects.Select(faceRect => new Face(
+    Face[] faces = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    document = new Faces(faceArray);
+    document = new FacesContainer(blobname, faces);
 }
 
-public class Faces{
-    public Face[] FacesArray { get; set; }
+public class FacesContainer{
+    public Face[] Faces { get; set; }
+    public String BlobName { get; set; }
 
-    public Faces(Face[] FacesArray){
-        this.FacesArray = FacesArray;
+    public FacesContainer(String BlobName, Face[] Faces){
+        this.BlobName = BlobName;
+        this.Faces = Faces;
     }
 }
 
