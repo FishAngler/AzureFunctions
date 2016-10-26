@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public async static Task Run(Stream inputBlob, string blobname, object document, TraceWriter log)
+public async static Task Run(Stream inputBlob, string blobname, List<Face> document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
@@ -21,13 +21,11 @@ public async static Task Run(Stream inputBlob, string blobname, object document,
     var faces = await faceServiceClient.DetectAsync(inputBlob);
 
     var faceRects = faces.Select(face => face.FaceRectangle);
-    var result = faceRects.Select(faceRect => new Face(
+    document = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
         faceRect.Top));
-
-    document = result;
 
 }
 
