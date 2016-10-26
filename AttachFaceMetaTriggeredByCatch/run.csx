@@ -19,7 +19,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
     string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
     string databaseName = "fishangler";
-    string collectionName = "HackFestCatches";
+    string collectionName = "HackFestFaces";
     DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
 
     // Set some common query options
