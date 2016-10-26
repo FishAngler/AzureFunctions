@@ -25,7 +25,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
     DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
 
-    await this.ExecuteSimpleQuery("fishangler", "HackFestFaces", fr);
+    await ExecuteSimpleQuery("fishangler", "HackFestFaces", fr);
 
     return req.CreateResponse(HttpStatusCode.Created);
 }
@@ -36,7 +36,7 @@ private async Task ExecuteSimpleQuery(string databaseName, string collectionName
     FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
 
     // Here we find the Andersen family via its LastName
-    var myQuery = this.client.CreateDocumentQuery<Catch>(
+    var myQuery = client.CreateDocumentQuery<Catch>(
             UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
             .Where(c => c.id == faceData.DocumentId)
             .Select(e => e).AsDocumentQuery();
@@ -60,10 +60,48 @@ private async Task ExecuteSimpleQuery(string databaseName, string collectionName
             }                    
         }
 
-        await this.client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
+        await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
     }    
 
     log.Info("Update Completed");
+}
+
+public class Catch
+{
+    public string UserId { get; set; }
+    public long CreationDate { get; set; }
+    public Fishspecies FishSpecies { get; set; }
+    public string Description { get; set; }
+    public string id { get; set; }
+    public IList<MediaBlob> Media { get; set; }
+}
+
+public class Fishspecies
+{
+    public string Id { get; set; }
+    public string Description { get; set; }
+}
+
+public class MediaBlob
+{
+    public string MediaUri { get; set; }
+    public IdDescription<int> MediaType { get; set; }
+    public string PreviewUri { get; set; }
+    public MediaSize Size { get; set; }
+
+    public List<Face> Faces { get; set; }
+}
+
+public class IdDescription<T>
+{
+    public T Id { get; set; }
+    public string Description { get; set; }
+}
+
+public class MediaSize
+{
+    public int Width { get; set; }
+    public int Height { get; set; }
 }
 
 public class FaceResult {
