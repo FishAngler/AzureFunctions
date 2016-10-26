@@ -11,7 +11,7 @@
         {
             "type": "table",
             "name": "homeFeedTable",
-            "tableName": "HomeFeed",
+            "tableName": "HackFestHomeFeed",
             "connection": "AzureStorageConnectionString",
             "direction": "out"
         }
