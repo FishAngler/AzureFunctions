@@ -1,4 +1,4 @@
-#r Newtonsoft.Json
+#r "Newtonsoft.Json"
 using System.Net;
 using Newtonsoft.Json;
 
@@ -9,10 +9,10 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     dynamic data = await req.Content.ReadAsAsync<List<Face>>();
     //string name = data?.name;
 
-    if (name == null)
-    {
-        return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
-    }
+    // if (name == null)
+    // {
+    //     return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
+    // }
 
     foreach(Face f in data){
         log.Info($"{f.Width}");
