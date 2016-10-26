@@ -6,7 +6,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 {
 
     FaceResult fr = new FaceResult();
-    fr = JsonConvert.DeserializeObject<FaceResult>(req);
+    fr = await JsonConvert.DeserializeObjectAsync<FaceResult>(req);
 
     //dynamic data = await req.Content.ReadAsAsync<FaceResult>();
     //string name = data?.name;
@@ -16,7 +16,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     //     return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
     // }
 
-    foreach(Face f in data){
+    foreach(Face f in FaceResult.Faces){
         log.Info($"{f.Width}");
     }
 
