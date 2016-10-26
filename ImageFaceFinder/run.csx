@@ -12,10 +12,12 @@ public static void Run(Stream inputBlob, string name, TraceWriter log)
 
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
-    var faces = faceServiceClient.Detect(inputBlob);
-     log.Info($"Face {faces}");
+
+    var faces = await faceServiceClient.DetectAsync(imageFileStream);
+         log.Info($"Faces {faces}");
     var faceRects = faces.Select(face => face.FaceRectangle);
     var temp = faceRects.ToArray();
+
 
     log.Info($"Result {temp}");
 
