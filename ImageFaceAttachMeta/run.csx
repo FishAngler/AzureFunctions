@@ -16,7 +16,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     //     return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
     // }
 
-    foreach(Face f in FaceResult.Faces){
+    foreach(Face f in fr.Faces){
         log.Info($"{f.Width}");
     }
 
