@@ -20,26 +20,26 @@ public static void Run(Stream inputBlob, string blobname, out Faces document, Tr
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
 
-    var faces = faceServiceClient.DetectAsync(inputBlob).Result;
+    var recognizedFaces = faceServiceClient.DetectAsync(inputBlob).Result;
 
-    var faceRects = faces.Select(face => face.FaceRectangle);
+    var faceRects = recognizedFaces.Select(face => face.FaceRectangle);
 
     log.Info($"Faces: {faceRects.Count()}");
 
-    Face[] faceArray = faceRects.Select(faceRect => new Face(
+    Face[] faces = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    document = new Faces(faceArray);
+    document = new Faces(faces);
 }
 
 public class Faces{
-    public Face[] FacesArray { get; set; }
+    public Face[] Faces { get; set; }
 
-    public Faces(Face[] FacesArray){
-        this.FacesArray = FacesArray;
+    public Faces(Face[] Faces){
+        this.Faces = Faces;
     }
 }
 
