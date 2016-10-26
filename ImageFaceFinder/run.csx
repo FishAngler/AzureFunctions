@@ -21,11 +21,11 @@ public async static Task Run(Stream inputBlob, string blobname, IEnumerable<Face
     var faces = await faceServiceClient.DetectAsync(inputBlob);
 
     var faceRects = faces.Select(face => face.FaceRectangle);
-    var ff = faceRects.Select(faceRect => new Face(
-        faceRect.Width, 
-        faceRect.Height, 
-        faceRect.Left, 
-        faceRect.Top));
+    // var ff = faceRects.Select(faceRect => new Face(
+    //     faceRect.Width, 
+    //     faceRect.Height, 
+    //     faceRect.Left, 
+    //     faceRect.Top));
 
 }
 
