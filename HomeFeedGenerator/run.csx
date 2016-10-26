@@ -1,7 +1,14 @@
+#r "Microsoft.WindowsAzure.Storage"
+
 using System;
 using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs;
+using Microsoft.WindowsAzure.Storage.Table;
 
-public static void Run(PostSummary post, TraceWriter log)
+public async static Task Run(
+    PostSummary post,
+    IAsyncCollector<DynamicTableEntity> homeFeedsTable, 
+    TraceWriter log)
 {
     log.Info($"C# ServiceBus queue trigger function processed message: {post}");
     log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
