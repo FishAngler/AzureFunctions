@@ -19,19 +19,30 @@ public async static Task Run(Stream inputBlob, string blobname, TraceWriter log)
 
 
     var faces = await faceServiceClient.DetectAsync(inputBlob);
-         log.Info($"Faces {faces}");
+
     var faceRects = faces.Select(face => face.FaceRectangle);
+    var result = faceRects.Select(faceRect => new Face(
+        faceRect.Width, 
+        faceRect.Height, 
+        faceRect.Left, 
+        faceRect.Top));
+        
+    document = result;
 
-     foreach (FaceRectangle faceRect in faceRects)
-    {
-        //log.Info($"ImageFile {faceRect.ImageFile}");
-        log.Info($"Left {faceRect.Left}");
-        log.Info($"Top {faceRect.Top}");
-        log.Info($"Width {faceRect.Width}");
-        log.Info($"Height {faceRect.Height}");
-
-    }
-
-
-    
 }
+
+
+public class Face
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int Loc_x { get; set; }
+        public int Loc_y { get; set; }
+
+        public Face(int Width, int Height, int Loc_x, int Loc_y){
+            this.Width = Width;
+            this.Height = Height;
+            this.Loc_x = Loc_x;
+            this.Loc_y = Loc_y;
+        }
+    }
