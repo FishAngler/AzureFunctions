@@ -24,7 +24,7 @@ public async static Task Run(Stream inputBlob, string blobname, TraceWriter log)
 
      foreach (FaceRectangle faceRect in faceRects)
     {
-        log.Info($"ImageFile {faceRect.ImageFile}");
+        //log.Info($"ImageFile {faceRect.ImageFile}");
         log.Info($"Left {faceRect.Left}");
         log.Info($"Top {faceRect.Top}");
         log.Info($"Width {faceRect.Width}");
