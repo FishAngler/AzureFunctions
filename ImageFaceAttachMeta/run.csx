@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
-    //List<Face> = new List<Face>();
 
-    dynamic data = await req.Content.ReadAsAsync<FaceResult>();
+    FaceResult fr = new FaceResult();
+    fr = await JsonConvert.DeserializeObjectAsync<FaceResult>(req);
+
+    //dynamic data = await req.Content.ReadAsAsync<FaceResult>();
     //string name = data?.name;
 
     // if (name == null)
@@ -14,7 +16,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     //     return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name in the request body");
     // }
 
-    foreach(Face f in data){
+    foreach(Face f in FaceResult.Faces){
         log.Info($"{f.Width}");
     }
 
