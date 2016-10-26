@@ -12,7 +12,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     string myData = await req.Content.ReadAsStringAsync();
     Catch receivedCatchRecord = JsonConvert.DeserializeObject<Catch>(myData);
     string catchId = receivedCatchRecord.id;
-    List<string> mediaUris = receivedCatchRecord.Media.Select(media => media.MediaUri);
+    List<string> mediaUris = receivedCatchRecord.Media.Select(media => media.MediaUri).ToList();
     //Get Data from temp DB
     //*********** DOC DB ********************/
 
