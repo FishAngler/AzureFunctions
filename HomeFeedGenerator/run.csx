@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Documents.Client;
 
 public async static Task Run(
     PostSummary post,
@@ -18,6 +19,15 @@ public async static Task Run(
     string _collName = "Follow";
 
     log.Info($"dbId = {_dbId}");
+    
+    var collLink = UriFactory.CreateDocumentCollectionUri(_dbId, _collName).ToString();
+
+    log.Info($"collLink = {collLink}");
+    
+    var followables = new List<string>();
+    followables.Add(post.UserId);
+    if (!string.IsNullOrWhiteSpace(post.BodyOfWater)) followables.Add(post.BodyOfWater);
+    if (!string.IsNullOrWhiteSpace(post.FishSpecie)) followables.Add(post.FishSpecie);
 }
 
 public class PostSummary
