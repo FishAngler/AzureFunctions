@@ -3,9 +3,9 @@
 using System;
 using System.Threading.Tasks;
 
-public static void Run(PostSummary post, TraceWriter log)
+public static void Run(string post, TraceWriter log)
 {
-    log.Info($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
+    log.Info($"C# ServiceBus queue trigger function processed message: {post}");
 }
 
 public class PostSummary
