@@ -3,8 +3,7 @@
     "net46":{
       "dependencies": {
         "Microsoft.Azure.Documents.Client": "1.10.0.0",
-        "Microsoft.Azure.DocumentDB": "1.10.0",
-        "System.Xml.Linq": "4.0.0.0"
+        "Microsoft.Azure.DocumentDB": "1.10.0"
       }
     }
    }
