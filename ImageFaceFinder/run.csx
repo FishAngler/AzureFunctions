@@ -21,7 +21,7 @@ public async static Task Run(Stream inputBlob, string blobname, IEnumerable<Face
     var faces = await faceServiceClient.DetectAsync(inputBlob);
 
     var faceRects = faces.Select(face => face.FaceRectangle);
-    document = faceRects.Select(faceRect => new Face(
+    var ff = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
