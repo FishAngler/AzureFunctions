@@ -20,7 +20,7 @@ public async static Task Run(Stream inputBlob, string blobname, TraceWriter log)
 
     var faces = await faceServiceClient.DetectAsync(inputBlob);
          log.Info($"Faces {faces}");
-    var faceRects = faces.Select(face => face.FaceRectangle).toArray();
+    var faceRects = faces.Select(face => face.FaceRectangle);
 
      foreach (int faceRect in faceRects)
     {
