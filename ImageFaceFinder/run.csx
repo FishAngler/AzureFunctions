@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public async static Task<object> Run(Stream inputBlob, string blobname, TraceWriter log)
+public static void Run(Stream inputBlob, string blobname, out IEnumerable<Face> document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
 
 
-    var faces = await faceServiceClient.DetectAsync(inputBlob);
+    var faces = faceServiceClient.DetectAsync(inputBlob).Result();
 
     var faceRects = faces.Select(face => face.FaceRectangle);
-    return faceRects.Select(faceRect => new Face(
+    document = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
