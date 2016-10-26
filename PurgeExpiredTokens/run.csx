@@ -1,3 +1,5 @@
+#r "Microsoft.WindowsAzure.Storage"
+
 using System;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
