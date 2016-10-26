@@ -47,6 +47,21 @@ public async static Task Run(
     foreach (var userId in usersIds) {
         log.Info($"userId = {userId}");
     }
+
+    if (usersIds.Count == 1)
+    {
+        var dict = new Dictionary<string, string>() { { "userIds", string.Join(",", usersIds) } };
+        log.Info($"PostFeedUpdater.ProcessAsync userIds.Count: {usersIds.Count} for Post: {post.PostId}");
+    }
+
+    await AddPostToHomeAndUserFeedsAsync(
+        post, 
+        usersIds, 
+        //userFeedsTable, 
+        homeFeedsTable)
+            .ConfigureAwait(false);
+
+    log.Info("All done");
 }
 
 public static async Task<IList<string>> GetFollowersAsync(IList<string> followables, string collLink)
@@ -104,6 +119,34 @@ public static async Task<T> SafeExecute<T>(Func<Task<T>> command)
             if (ex.RetryAfter != null) await Task.Delay(ex.RetryAfter).ConfigureAwait(false);
         }
     }
+}
+
+private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
+
+public static Task AddPostToHomeAndUserFeedsAsync(
+    PostSummary post, 
+    IEnumerable<string> usersIds,
+    //IAsyncCollector<DynamicTableEntity> userFeedsTable,
+    IAsyncCollector<DynamicTableEntity> homeFeedsTable)
+{
+    var feedProps = new Dictionary<string, EntityProperty> {
+        { nameof(PostSummary.PostId), new EntityProperty(post.PostId) },
+        { nameof(PostSummary.PostType), new EntityProperty((int)post.PostType) }};
+
+    var rk = string.Format("{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
+
+    var tasks = new List<Task>();
+
+    //var item = new DynamicTableEntity(partitionKey: post.UserId, rowKey: rk, properties: feedProps, etag: null);
+    //tasks.Add(userFeedsTable.AddAsync(item));
+
+    foreach (var userId in usersIds.Distinct())
+    {
+        var item = new DynamicTableEntity(partitionKey: userId, rowKey: rk, properties: feedProps, etag: null);
+        tasks.Add(homeFeedsTable.AddAsync(item));
+    }
+
+    return Task.WhenAll(tasks);
 }
 
 public class Follow
