@@ -23,18 +23,15 @@ private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
 public async static Task Run(
     PostSummary post,
     IAsyncCollector<DynamicTableEntity> homeFeedTable, 
+    IAsyncCollector<DynamicTableEntity> userFeedTable, 
     TraceWriter log)
 {
-    log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
+    log.Info($"Creating feed from post by '{post.UserId}'");
 
     string _dbId = ConfigurationManager.AppSettings["DocDBId"];
     string _collName = "Follow";
-
-    log.Info($"dbId = {_dbId}");
-    
+   
     var collLink = UriFactory.CreateDocumentCollectionUri(_dbId, _collName).ToString();
-
-    log.Info($"collLink = {collLink}");
 
     var followables = new List<string>();
     followables.Add(post.UserId);
@@ -44,10 +41,6 @@ public async static Task Run(
     var usersIds = await GetFollowersAsync(followables, collLink).ConfigureAwait(false);
     usersIds.Add(post.UserId); //TO include the post in the HomeFeed of the own user
     
-    foreach (var userId in usersIds) {
-        log.Info($"userId = {userId}");
-    }
-
     if (usersIds.Count == 1)
     {
         var dict = new Dictionary<string, string>() { { "userIds", string.Join(",", usersIds) } };
@@ -57,7 +50,7 @@ public async static Task Run(
     await AddPostToHomeAndUserFeedsAsync(
         post, 
         usersIds, 
-        //userFeedsTable, 
+        userFeedTable, 
         homeFeedTable)
             .ConfigureAwait(false);
 
@@ -124,23 +117,23 @@ public static async Task<T> SafeExecute<T>(Func<Task<T>> command)
 public static Task AddPostToHomeAndUserFeedsAsync(
     PostSummary post, 
     IEnumerable<string> usersIds,
-    //IAsyncCollector<DynamicTableEntity> userFeedsTable,
+    IAsyncCollector<DynamicTableEntity> userFeedTable,
     IAsyncCollector<DynamicTableEntity> homeFeedTable)
 {
     var feedProps = new Dictionary<string, EntityProperty> {
         { nameof(PostSummary.PostId), new EntityProperty(post.PostId) },
         { nameof(PostSummary.PostType), new EntityProperty((int)post.PostType) }};
 
-    var rk = string.Format("ZAIN{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
+    var rk = string.Format("{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
 
     var tasks = new List<Task>();
 
-    //var item = new DynamicTableEntity(partitionKey: post.UserId, rowKey: rk, properties: feedProps, etag: null);
-    //tasks.Add(userFeedsTable.AddAsync(item));
+    var item = new DynamicTableEntity(partitionKey: post.UserId, rowKey: rk, properties: feedProps, etag: null);
+    tasks.Add(userFeedTable.AddAsync(item));
 
     foreach (var userId in usersIds.Distinct())
     {
-        var item = new DynamicTableEntity(partitionKey: userId, rowKey: rk, properties: feedProps, etag: null);
+        item = new DynamicTableEntity(partitionKey: userId, rowKey: rk, properties: feedProps, etag: null);
         tasks.Add(homeFeedTable.AddAsync(item));
     }
 

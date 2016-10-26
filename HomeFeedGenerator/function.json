@@ -14,6 +14,13 @@
             "tableName": "HackFestHomeFeed",
             "connection": "AzureStorageConnectionString",
             "direction": "out"
+        },
+        {
+            "type": "table",
+            "name": "userFeedTable",
+            "tableName": "HackFestUserFeed",
+            "connection": "AzureStorageConnectionString",
+            "direction": "out"
         }
     ]
 }
