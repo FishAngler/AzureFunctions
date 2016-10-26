@@ -2,11 +2,11 @@
     "disabled": false,
     "bindings": [
         {
-            "name": "myQueueItem",
+            "name": "post",
             "type": "serviceBusTrigger",
             "direction": "in",
-            "queueName": "myqueue",
-            "connection": ""
+            "queueName": "homefeed",
+            "connection": "hackfestServiceBus"
         }
     ]
 }
