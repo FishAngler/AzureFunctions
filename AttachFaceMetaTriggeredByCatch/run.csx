@@ -8,33 +8,11 @@ using Microsoft.Azure.Documents.Linq;
 
 public static async Task Run(HttpRequestMessage req, TraceWriter log)
 {
-    //Get data from req
     string myData = await req.Content.ReadAsStringAsync();
     Catch receivedCatchRecord = JsonConvert.DeserializeObject<Catch>(myData);
     string catchId = receivedCatchRecord.id;
-    List<string> mediaUris = receivedCatchRecord.Media.Select(media => media.MediaUri).ToList();
-    //Get Data from temp DB
-    //*********** DOC DB ********************/
 
-    string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
-    string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
-    string databaseName = "fishangler";
-    string collectionName = "HackFestFaces";
-    DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
-
-    // Set some common query options
-    FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
-
-    var myQuery = client.CreateDocumentQuery<MediaMetaInfo>(
-            UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
-            .Where(mediaMetaInfo => mediaMetaInfo.CatchId == catchId)
-            .Select(e => e).AsDocumentQuery();
-
-    // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
-    log.Info("Running LINQ query...");
-
-    var mediaMetaInfoRecords = (await myQuery.ExecuteNextAsync<MediaMetaInfo>());
-   
+    var mediaMetaInfoRecords = getMediaMetaInfo(catchId);
     if(mediaMetaInfoRecords != null){
         log.Info("Media meta info records found...");
         updateCatchRecord(catchId, mediaMetaInfoRecords);
@@ -95,7 +73,35 @@ public class Face
     public string UserId { get; set; }
 }
 
+public static getMediaMetaInfo(){
+    string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
+    string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
+    string databaseName = "fishangler";
+    string collectionName = "HackFestFaces";
+    DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
+
+    // Set some common query options
+    FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
+
+    var myQuery = client.CreateDocumentQuery<MediaMetaInfo>(
+            UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
+            .Where(mediaMetaInfo => mediaMetaInfo.CatchId == catchId)
+            .Select(e => e).AsDocumentQuery();
+
+    // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
+    log.Info("Running LINQ query...");
+
+    return (await myQuery.ExecuteNextAsync<MediaMetaInfo>());
+}
+
 public static updateCatchRecord(string catchId, IEnumerable<MediaMetaInfo> mediaMetaInfoList){
+
+    string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
+    string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
+    string databaseName = "fishangler";
+    string collectionName = "HackFestFaces";
+    DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
+
     // Here we find the Andersen family via its LastName
     var myQuery = client.CreateDocumentQuery<Catch>(
             UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
