@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public static void Run(Stream inputBlob, string blobname, out IEnumerable<Face> document, TraceWriter log)
+public static void Run(Stream inputBlob, string blobname, out Face[] document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
@@ -25,7 +25,7 @@ public static void Run(Stream inputBlob, string blobname, out IEnumerable<Face> 
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
-        faceRect.Top));
+        faceRect.Top)).toArray;
 
 }
 
