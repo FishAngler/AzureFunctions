@@ -5,7 +5,7 @@
             "name": "inputBlob",
             "type": "blobTrigger",
             "direction": "in",
-            "path": "hackfestblobs/{blobname}",
+            "path": "hackfestblobs/{id}/{blobname}",
             "connection":"AzureStorageConnectionString"
         },
 
