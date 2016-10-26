@@ -1,6 +1,6 @@
 {
   "frameworks": {
-    "net452":{
+    "net46":{
       "dependencies": {
         "Microsoft.ProjectOxford.Face": "1.2.1.2"
       }
