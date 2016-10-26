@@ -20,18 +20,12 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         log.Info($"Width: {f.Width}");
     }
 
+    //*********** DOC DB ********************/
 
-
-    var result = await ExecuteSimpleQuery("fishangler", "HackFestFaces", fr);
-
-    return req.CreateResponse(HttpStatusCode.Created);
-}
-
-private async Task ExecuteSimpleQuery(string databaseName, string collectionName, FaceResult faceData)
-{
-    //Doc DB
     string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
     string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
+    string databaseName = "fishangler";
+    string collectionName = "HackFestFaces";
     DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
 
     // Set some common query options
@@ -40,23 +34,23 @@ private async Task ExecuteSimpleQuery(string databaseName, string collectionName
     // Here we find the Andersen family via its LastName
     var myQuery = client.CreateDocumentQuery<Catch>(
             UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
-            .Where(c => c.id == faceData.DocumentId)
+            .Where(c => c.id == fr.DocumentId)
             .Select(e => e).AsDocumentQuery();
 
     // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
-    //log.Info("Running LINQ query...");
+    log.Info("Running LINQ query...");
 
     var myCatch = (await myQuery.ExecuteNextAsync<Catch>()).SingleOrDefault();
     
     if(myCatch != null)
-        //log.Info("Document Found...");
+        log.Info("Document Found...");
 
     if (myCatch.Media != null)
     {
         foreach (var media in myCatch.Media)
         {
             media.Faces = new List<Face>();
-            foreach (Face f in faceData.Faces)
+            foreach (Face f in fr.Faces)
             {
                 media.Faces.Add(f);
             }                    
@@ -65,7 +59,11 @@ private async Task ExecuteSimpleQuery(string databaseName, string collectionName
         await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
     }    
 
-    //log.Info("Update Completed");
+    log.Info("Update Completed");
+
+    //*********** END DB ********************/
+
+    return req.CreateResponse(HttpStatusCode.Created);
 }
 
 public class Catch
