@@ -13,12 +13,11 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public static void Run(Stream inputBlob, string blobname, out FacesContainer document, TraceWriter log)
+public static void Run(Stream inputBlob, string blobname, string catchId, out FacesContainer document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
     IFaceServiceClient faceServiceClient = new FaceServiceClient(ConfigurationManager.AppSettings["CognitiveServiceAPIKey"]);
-
 
     var recognizedFaces = faceServiceClient.DetectAsync(inputBlob).Result;
 
@@ -32,16 +31,18 @@ public static void Run(Stream inputBlob, string blobname, out FacesContainer doc
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    document = new FacesContainer(blobname, faces);
+    document = new FacesContainer(catchId, $"blob/catch/{catchId}/{blobname}", faces);
 }
 
 public class FacesContainer{
     public Face[] Faces { get; set; }
-    public String BlobName { get; set; }
+    public string CatchId { get; set; }
+    public string MediaUri { get; set; }
 
-    public FacesContainer(String BlobName, Face[] Faces){
-        this.BlobName = BlobName;
+    public FacesContainer(string CatchId, string MediaUri, Face[] Faces){
+        this.CatchId = CatchId;
         this.Faces = Faces;
+        this.MediaUri = MediaUri;
     }
 }
 
