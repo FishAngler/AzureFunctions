@@ -131,7 +131,7 @@ public static Task AddPostToHomeAndUserFeedsAsync(
         { nameof(PostSummary.PostId), new EntityProperty(post.PostId) },
         { nameof(PostSummary.PostType), new EntityProperty((int)post.PostType) }};
 
-    var rk = string.Format("{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
+    var rk = string.Format("ZAIN{0:D19}", _maxTicks - post.CreationDate) + "_" + post.PostId + "_" + post.PostType;
 
     var tasks = new List<Task>();
 
