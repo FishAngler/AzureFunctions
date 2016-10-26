@@ -9,14 +9,17 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     FaceResult fr = new FaceResult();
     fr = JsonConvert.DeserializeObject<FaceResult>(myData);
 
+    log.Info($"Retrieving Document: {fr.DocumentId}");
+
     foreach(Face f in fr.Faces){
-        log.Info($"{f.Width}");
+        log.Info($"Width: {f.Width}");
     }
 
     return req.CreateResponse(HttpStatusCode.Created);
 }
 
 public class FaceResult {
+    public string DocumentId { get; set; }
     public List<Face> Faces {get;set;}
 }
 
