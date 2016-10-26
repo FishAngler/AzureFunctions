@@ -6,7 +6,7 @@
             "type": "blobTrigger",
             "direction": "in",
             "path": "hackfestblobs",
-            "connection":"AzureStorageConnectionString"
+            "connection":"AzureStorageBlobConnectionString"
         }
     ]
 }
