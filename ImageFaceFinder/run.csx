@@ -27,7 +27,7 @@ public static void Run(Stream inputBlob, string blobname, out Face[] document, T
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
-        faceRect.Top)).toArray();
+        faceRect.Top)).ToArray();
 
 }
 
