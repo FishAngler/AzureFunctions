@@ -32,13 +32,15 @@ public static void Run(Stream inputBlob, string blobname, out Faces document, Tr
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    document = new FacesContainer(faces);
+    document = new FacesContainer(blobname, faces);
 }
 
 public class FacesContainer{
     public Face[] Faces { get; set; }
+    public String BlobName { get; set; }
 
-    public FacesContainer(Face[] Faces){
+    public FacesContainer(String BlobName, Face[] Faces){
+        this.BlobName = BlobName;
         this.Faces = Faces;
     }
 }
@@ -48,6 +50,7 @@ public class Face
         public int Width { get; set; }
         public int Height { get; set; }
         public int Loc_x { get; set; }
+        public int Loc_y { get; set; }
         public int Loc_y { get; set; }
 
         public Face(int Width, int Height, int Loc_x, int Loc_y){
