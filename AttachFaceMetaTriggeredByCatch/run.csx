@@ -33,7 +33,7 @@ public static async Task Run(HttpRequestMessage req, TraceWriter log)
     // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
     log.Info("Running LINQ query...");
 
-    var mediaMetaInfoRecords = (await myQuery.ExecuteNextAsync<MediaMetaInfo>()).SingleOrDefault();
+    var mediaMetaInfoRecords = (await myQuery.ExecuteNextAsync<MediaMetaInfo>());
     
     if(mediaMetaInfoRecords != null){
         log.Info("Documents Found...");
