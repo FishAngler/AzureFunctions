@@ -12,7 +12,7 @@
          {
             "name": "document",
             "type": "documentDB",
-            "databaseName": "dev-doc-eus-fa-001",
+            "databaseName": "fishangler",
             "collectionName": "HackFestFaces",
             "createIfNotExists": false,
             "connection": "DocumentDBConnectionString",
