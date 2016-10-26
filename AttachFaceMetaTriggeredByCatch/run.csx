@@ -6,7 +6,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 
-public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
+public static async Task Run(HttpRequestMessage req, TraceWriter log)
 {
     //Get data from req
     string myData = await req.Content.ReadAsStringAsync();
