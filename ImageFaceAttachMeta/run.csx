@@ -26,4 +26,5 @@ public class Face
     public int Height { get; set; }
     public int Loc_x { get; set; }
     public int Loc_y { get; set; }
+    public string UserId { get; set; }
 }
