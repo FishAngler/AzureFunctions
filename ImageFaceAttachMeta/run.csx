@@ -7,7 +7,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     string myData = await req.Content.ReadAsStringAsync();
     FaceResult fr = new FaceResult();
-    fr = await JsonConvert.DeserializeObjectAsync<FaceResult>(myData);
+    fr = JsonConvert.DeserializeObject<FaceResult>(myData);
 
     foreach(Face f in fr.Faces){
         log.Info($"{f.Width}");
