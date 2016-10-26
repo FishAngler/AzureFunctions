@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 
-public static void Run(Post post, TraceWriter log)
+public static void Run(PostSummary post, TraceWriter log)
 {
     log.Info($"C# ServiceBus queue trigger function processed message: {post}");
-    //log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
+    log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
 }
 
 public class PostSummary
