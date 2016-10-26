@@ -73,7 +73,7 @@ public static async Task<IList<string>> GetFollowersAsync(IList<string> followab
     return rt;
 }
 
-protected static async Task<IList<T>> QueryCollectionAsync<T>(IDocumentQuery<T> query)
+public static async Task<IList<T>> QueryCollectionAsync<T>(IDocumentQuery<T> query)
 {
     var result = new List<T>();
 
@@ -86,7 +86,7 @@ protected static async Task<IList<T>> QueryCollectionAsync<T>(IDocumentQuery<T> 
     return result;
 }
 
-protected static async Task<T> SafeExecute<T>(Func<Task<T>> command)
+public static async Task<T> SafeExecute<T>(Func<Task<T>> command)
 {
     while (true)
     {
