@@ -6,7 +6,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 {
     //List<Face> = new List<Face>();
 
-    dynamic data = await req.Content.ReadAsAsync<Faces>();
+    dynamic data = await req.Content.ReadAsAsync<FaceResult>();
     //string name = data?.name;
 
     // if (name == null)
@@ -21,7 +21,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     return req.CreateResponse(HttpStatusCode.Created);
 }
 
-public class Faces {
+public class FaceResult {
     public List<Face> Faces {get;set;}
 }
 
