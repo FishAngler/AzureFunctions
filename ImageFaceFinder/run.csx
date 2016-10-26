@@ -23,6 +23,10 @@ public static void Run(Stream inputBlob, string blobname, out Face[] document, T
     var faces = faceServiceClient.DetectAsync(inputBlob).Result;
 
     var faceRects = faces.Select(face => face.FaceRectangle);
+
+    log.Info($"Faces: {faceRects.Count()}");
+
+
     document = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
