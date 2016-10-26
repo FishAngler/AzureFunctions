@@ -1,6 +1,8 @@
 #r "Microsoft.WindowsAzure.Storage"
+#r "System.Runtime"
 
 using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -12,6 +14,9 @@ public async static Task Run(
 {
     log.Info($"C# ServiceBus queue trigger function processed message: {post}");
     log.Info($"C# ServiceBus queue trigger function processed message: {post.PostId} {post.BodyOfWater}");
+
+    string _dbId = ConfigurationManager.AppSettings["DocDBId"];
+    string _collName = "Follow";
 }
 
 public class PostSummary
