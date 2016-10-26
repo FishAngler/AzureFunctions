@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public static void Run(Stream inputBlob, string blobname, out object document, TraceWriter log)
+public static void Run(Stream inputBlob, string blobname, out Faces document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
@@ -24,19 +24,24 @@ public static void Run(Stream inputBlob, string blobname, out object document, T
 
     var faceRects = faces.Select(face => face.FaceRectangle);
 
+    log.Info($"Faces: {faceRects.Count()}");
 
-    List<Face> result = faceRects.Select(faceRect => new Face(
+    Face[] faceArray = faceRects.Select(faceRect => new Face(
         faceRect.Width, 
         faceRect.Height, 
         faceRect.Left, 
-        faceRect.Top)).ToList();
+        faceRect.Top)).ToArray();
 
-        log.Info($"Faces: {result.Count()}");
-
-        document = result;
-
+    document = new Faces(faceArray);
 }
 
+public class Faces{
+    public Face[] FacesArray { get; set; }
+
+    public Faces(Face[] FacesArray){
+        this.FacesArray = FacesArray;
+    }
+}
 
 public class Face
     {
