@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.ProjectOxford.Face; 
 using Microsoft.ProjectOxford.Face.Contract;
 
-public async static Task Run(Stream inputBlob, string blobname, List<Face> document, TraceWriter log)
+public async static Task Run(Stream inputBlob, string blobname, IEnumerable<Face> document, TraceWriter log)
 {
     log.Info($"C# Blob trigger function Processed blob\n Name:{blobname} \n Size: {inputBlob.Length} Bytes");
 
