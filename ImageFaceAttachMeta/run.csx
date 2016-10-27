@@ -22,31 +22,35 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         log.Info($"Height: {f.Height}");
     }
 
-    //*********** DOC DB ********************/
-
+    /*********** DocumentDb Settings ********************/
     string EndpointUri = ConfigurationManager.AppSettings["DocDBEndpoint"];
     string PrimaryKey = ConfigurationManager.AppSettings["DocDBKey"];
-    string databaseName = "fishangler";
-    string collectionName = "HackFestCatches";
+    string databaseName = ConfigurationManager.AppSettings["DocDBId"];
+    string collectionName = ConfigurationManager.AppSettings["DocDBCollection"];
+
+    // Create Client
     DocumentClient client = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
 
     // Set some common query options
     FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
 
-    // Here we find the Andersen family via its LastName
+    // Search for Catch by supplied CatchId
     var myQuery = client.CreateDocumentQuery<Catch>(
             UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), queryOptions)
             .Where(c => c.id == fr.CatchId)
             .Select(e => e).AsDocumentQuery();
 
-    // The query is executed synchronously here, but can also be executed asynchronously via the IDocumentQuery<T> interface
     log.Info("Running LINQ query...");
 
+    // Grab the Catch
     var myCatch = (await myQuery.ExecuteNextAsync<Catch>()).SingleOrDefault();
     
     if(myCatch != null)
         log.Info("Document Found...");
 
+    // TODO: Fail Gracefully
+
+    // Attach Face Meta Data if Media is not Null
     if (myCatch.Media != null)
     {
 
@@ -74,7 +78,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     log.Info("Update Completed");
 
-    //*********** END DB ********************/
+    /*********** END DocumentDb ********************/
 
     return req.CreateResponse(HttpStatusCode.Created);
 }
