@@ -19,6 +19,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     foreach(Face f in fr.Faces){
         log.Info($"Width: {f.Width}");
         log.Info($"Height: {f.Height}");
+        log.Info($"Height: {f.MediaUri}");
     }
 
     //*********** DOC DB ********************/
