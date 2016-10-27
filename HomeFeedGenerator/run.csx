@@ -22,12 +22,13 @@ using Microsoft.ServiceBus.Messaging;
 private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
 
 public async static Task Run(
-    PostSummary message,
+    string message,
     IAsyncCollector<DynamicTableEntity> homeFeedTable, 
     IAsyncCollector<DynamicTableEntity> userFeedTable, 
     TraceWriter log)
 {
-    PostSummary post = message;
+    log.Info($"received {message}");
+    PostSummary post = JsonConvert.DeserializeObject(message);
 
     log.Info($"Creating feed from post by '{post.UserId}'");
 
