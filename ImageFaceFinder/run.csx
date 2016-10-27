@@ -15,6 +15,7 @@ using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
 using Newtonsoft.Json;
 using System.Net;
+using System.Text;
 
 public static void Run(Stream inputBlob, string blobname, string catchId, TraceWriter log)
 {
