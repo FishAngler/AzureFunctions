@@ -8,7 +8,7 @@
             "queueName": "homefeed",
             "connection": "hackfestServiceBus"
         },
-        {
+        { 
             "type": "table",
             "name": "homeFeedTable",
             "tableName": "HackFestHomeFeed",
