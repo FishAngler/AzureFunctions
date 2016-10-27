@@ -34,7 +34,31 @@ public static void Run(Stream inputBlob, string blobname, string catchId, TraceW
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    document = new FacesContainer(catchId, $"blob/catch/{catchId}/{blobname}", faces);
+    FacesContainer fc = new FacesContainer(catchId, $"blob/catch/{catchId}/{blobname}", faces);
+
+    WebRequest request = WebRequest.Create("https://dev-af-eus-fa-001.azurewebsites.net/api/ImageFaceAttachMeta?code=udm1to2ia8fwpccxyzivhd7vi4shyjo4zf02v93aw4tajpgmn29qn43vmdu32717doonrs2x1or");
+    
+    request.Method = "POST";
+
+    string postData = JsonConvert.SerializeObject(fc);
+    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+    request.ContentType = "application/json";
+    request.ContentLength = byteArray.Length;
+
+    Stream dataStream = request.GetRequestStream();
+    dataStream.Write(byteArray, 0, byteArray.Length);
+    dataStream.Close();
+
+    WebResponse response = request.GetResponse();
+    Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+    dataStream = response.GetResponseStream();
+    StreamReader reader = new StreamReader(dataStream);
+    string responseFromServer = reader.ReadToEnd();
+    Console.WriteLine(responseFromServer);
+
+    reader.Close();
+    dataStream.Close();
+    response.Close();
 }
 
 public class FacesContainer
