@@ -2,7 +2,7 @@
     "disabled": true,
     "bindings": [
         {
-            "name": "post",
+            "name": "message",
             "type": "serviceBusTrigger",
             "direction": "in",
             "queueName": "homefeed",
