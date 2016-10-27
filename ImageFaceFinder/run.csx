@@ -37,6 +37,8 @@ public static void Run(Stream inputBlob, string blobname, string catchId, TraceW
 
     FacesContainer fc = new FacesContainer(catchId, $"blob/catch/{catchId}/{blobname}", faces);
 
+    log.Info($"{fc.MediaUri}");
+
     WebRequest request = WebRequest.Create("https://dev-af-eus-fa-001.azurewebsites.net/api/ImageFaceAttachMeta?code=udm1to2ia8fwpccxyzivhd7vi4shyjo4zf02v93aw4tajpgmn29qn43vmdu32717doonrs2x1or");
     
     request.Method = "POST";
