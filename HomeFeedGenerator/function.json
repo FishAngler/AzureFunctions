@@ -1,5 +1,5 @@
 ﻿{
-    "disabled": true,
+    "disabled": false,
     "bindings": [
         {
             "name": "message",
