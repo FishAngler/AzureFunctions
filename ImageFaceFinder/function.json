@@ -7,16 +7,6 @@
             "direction": "in",
             "path": "hackfestblobs/{catchId}/{blobname}",
             "connection":"AzureStorageBlobConnectionString"
-        },
-
-         {
-            "name": "document",
-            "type": "documentDB",
-            "databaseName": "fishangler",
-            "collectionName": "HackFestFaces",
-            "createIfNotExists": false,
-            "connection": "DocumentDBConnectionString",
-            "direction": "out"
         }
     ]
 }

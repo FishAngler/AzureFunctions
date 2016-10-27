@@ -18,6 +18,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     log.Info($"Retrieving Document: {fr.CatchId}");
     foreach(Face f in fr.Faces){
         log.Info($"Width: {f.Width}");
+        log.Info($"Height: {f.Height}");
     }
 
     //*********** DOC DB ********************/
@@ -53,16 +54,18 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         
         if (myMediaToUpdate != null)
         {
-            MediaBlob myMediaUpdated = new MediaBlob();
-            myMediaUpdated = myMediaToUpdate;
+            MediaBlob myMediaUpdated = myMediaToUpdate;
 
             myMediaUpdated.Faces = new List<Face>();
             foreach (Face f in fr.Faces)
             {
                 myMediaUpdated.Faces.Add(f);
+                log.Info("Adding Face...");
             }
             myCatch.Media.Remove(myMediaToUpdate);
+            log.Info("Removing Record...");
             myCatch.Media.Add(myMediaUpdated);
+            log.Info("Updating Media Record...");
         }
 
         await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, myCatch.id), myCatch);
