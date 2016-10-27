@@ -15,7 +15,8 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     fr = JsonConvert.DeserializeObject<FaceResult>(myData);
 
     //Debugging 
-    log.Info($"Retrieving Document: {fr.CatchId}");
+    log.Info($"CatchId: {fr.CatchId}");
+    log.Info($"MediaUri: {fr.MediaUri}");
     foreach(Face f in fr.Faces){
         log.Info($"Width: {f.Width}");
         log.Info($"Height: {f.Height}");
