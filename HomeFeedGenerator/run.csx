@@ -17,15 +17,18 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.ServiceBus.Messaging;
 
 private static readonly long _maxTicks = DateTime.MaxValue.Ticks;
 
 public async static Task Run(
-    PostSummary post,
+    BrokeredMessage message,
     IAsyncCollector<DynamicTableEntity> homeFeedTable, 
     IAsyncCollector<DynamicTableEntity> userFeedTable, 
     TraceWriter log)
 {
+    PostSummary post = message.GetBody<PostSummary>();
+
     log.Info($"Creating feed from post by '{post.UserId}'");
 
     string _dbId = ConfigurationManager.AppSettings["DocDBId"];

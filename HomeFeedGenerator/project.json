@@ -12,6 +12,7 @@
         "Microsoft.WindowsAzure.ConfigurationManager": "2.0.3",
         "Newtonsoft.Json": "6.0.8",
         "System.Spatial": "5.6.0",
+        "WindowsAzure.ServiceBus": "3.4.0",
         "WindowsAzure.Storage": "4.2.1"
       }
     }
