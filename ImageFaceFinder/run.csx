@@ -35,7 +35,7 @@ public static void Run(Stream inputBlob, string blobname, string catchId, TraceW
         faceRect.Left, 
         faceRect.Top)).ToArray();
 
-    FacesContainer fc = new FacesContainer(catchId, $"blob/catch/{catchId}/{blobname}", faces);
+    FacesContainer fc = new FacesContainer(catchId, $"blobs/catch/{catchId}/{blobname}", faces);
 
     log.Info($"{fc.MediaUri}");
 
