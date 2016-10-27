@@ -51,11 +51,11 @@ public static void Run(Stream inputBlob, string blobname, string catchId, TraceW
     dataStream.Close();
 
     WebResponse response = request.GetResponse();
-    log.info(((HttpWebResponse)response).StatusDescription);
+    //log.info(((HttpWebResponse)response).StatusDescription);
     dataStream = response.GetResponseStream();
     StreamReader reader = new StreamReader(dataStream);
     string responseFromServer = reader.ReadToEnd();
-    log.info(responseFromServer);
+    //log.info(responseFromServer);
 
     reader.Close();
     dataStream.Close();
