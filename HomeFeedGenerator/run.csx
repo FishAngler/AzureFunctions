@@ -28,7 +28,7 @@ public async static Task Run(
     TraceWriter log)
 {
     log.Info($"received {message}");
-    PostSummary post = JsonConvert.DeserializeObject(message);
+    PostSummary post = JsonConvert.DeserializeObject<PostSummary>(message);
 
     log.Info($"Creating feed from post by '{post.UserId}'");
 
